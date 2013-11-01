@@ -7,7 +7,7 @@ import org.lwjgl.opengl.DisplayMode;
 public class TheDisplay {
     public static void main(String[] argv) throws LWJGLException {
         DisplayMode[] availableDisplayModes = Display.getAvailableDisplayModes();
-        Display.setFullscreen(true);
+        Display.setFullscreen(false);
         for (DisplayMode dm : availableDisplayModes) {
             System.out.println(dm);
             Display.setDisplayMode(dm);
