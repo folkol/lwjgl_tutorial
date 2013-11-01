@@ -13,15 +13,18 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 public class Fullscreen {
 
     static DisplayMode dm = new DisplayMode(400, 300);
     static boolean fullscreen;
+    private static float rot;
 
     public static void main(String[] args) throws LWJGLException {
         JFrame window = createDialog();
 
+        Display.setVSyncEnabled(true);
         Display.create();
         while (!Display.isCloseRequested()) {
             if(!Display.getDisplayMode().equals(dm) || Display.isFullscreen() != fullscreen) {
@@ -40,11 +43,30 @@ public class Fullscreen {
             if(Keyboard.isKeyDown(Keyboard.KEY_F))
                 fullscreen = true;
 
+            render();
+
             Display.update();
         }
         Display.destroy();
 
         window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+    }
+
+    private static void render() {
+        rot++;
+
+        GL11.glClearColor(0.2f, 0.2f, 0.2f, 1);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        GL11.glPushMatrix();
+        GL11.glRotatef(rot, 0, 0, 1);
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        GL11.glColor3f(1, 0, 0);
+        GL11.glVertex2f(0, 0);
+        GL11.glVertex2f(100, 0);
+        GL11.glVertex2f(50, 100);
+        GL11.glEnd();
+        GL11.glPopMatrix();
     }
 
     private static JFrame createDialog() throws LWJGLException {
